@@ -5,6 +5,9 @@ import { LocalParticipant, RemoteParticipant } from 'twilio-video';
 import firebase from '../../firebase';
 import { useAppState } from '../../state';
 import SurpriseFace from '../../components/SurpriseFace/SurpriseFace';
+import JoyFace from '../../components/JoyFace/JoyFace';
+import AngryFace from '../../components/AngryFace/AngryFace';
+import { reactions } from '../../constants';
 
 interface ParticipantProps {
   participant: LocalParticipant | RemoteParticipant;
@@ -23,6 +26,8 @@ export default function Participant({
 }: ParticipantProps) {
   const { currentRoomName } = useAppState();
   const [showSurprise, setShowSurprise] = useState(false);
+  const [showJoy, setShowJoy] = useState(false);
+  const [showAngry, setShowAngry] = useState(false);
 
   useEffect(() => {
     const db = firebase.firestore();
@@ -32,8 +37,20 @@ export default function Participant({
         snapshot.docChanges().forEach(function(change) {
           if (change.type === 'modified') {
             if (change.doc.data().name === participant.identity) {
-              setShowSurprise(true);
-              setTimeout(() => setShowSurprise(false), 2000);
+              switch (change.doc.data().reaction) {
+                case reactions.SURPRISE:
+                  setShowSurprise(true);
+                  setTimeout(() => setShowSurprise(false), 2000);
+                  break;
+                case reactions.JOY:
+                  setShowJoy(true);
+                  setTimeout(() => setShowJoy(false), 2000);
+                  break;
+                case reactions.ANGRY:
+                  setShowAngry(true);
+                  setTimeout(() => setShowAngry(false), 2000);
+                  break;
+              }
             }
           }
         });
@@ -44,6 +61,8 @@ export default function Participant({
     <ParticipantInfo participant={participant} onClick={onClick} isSelected={isSelected}>
       <ParticipantTracks participant={participant} disableAudio={disableAudio} enableScreenShare={enableScreenShare} />
       {showSurprise ? <SurpriseFace /> : <div></div>}
+      {showJoy ? <JoyFace /> : <div></div>}
+      {showAngry ? <AngryFace /> : <div></div>}
     </ParticipantInfo>
   );
 }
