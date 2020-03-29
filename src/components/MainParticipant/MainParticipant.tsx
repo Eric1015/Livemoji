@@ -5,6 +5,8 @@ import useMainSpeaker from '../../hooks/useMainSpeaker/useMainSpeaker';
 import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 
+import InvisibleWebcam from '../InvisibleWebcam/InvisibleWebcam';
+
 export default function MainParticipant() {
   const mainParticipant = useMainSpeaker();
   const [selectedParticipant] = useSelectedParticipant();
@@ -18,6 +20,7 @@ export default function MainParticipant() {
        is already being rendered in the <ParticipantStrip /> component.  */
     <MainParticipantInfo participant={mainParticipant}>
       <ParticipantTracks participant={mainParticipant} disableAudio enableScreenShare videoPriority={videoPriority} />
+      <InvisibleWebcam />
     </MainParticipantInfo>
   );
 }
