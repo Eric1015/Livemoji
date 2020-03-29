@@ -66,7 +66,7 @@ function InvisibleWebcam() {
       }
     }
 
-    // vision.init({ auth: "AIzaSyAuYY5D6lpBXF6FrjDbda_3t-tSCQlFNJI" });
+    // vision.init({ auth: process.env.REACT_APP_VISION_API_KEY });
     // const req = new vision.Request({
     //   image: new vision.Image({
     //     base64: imageSrc
